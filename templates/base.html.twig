@@ -1,19 +1,53 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+	<head>
+		<meta charset="UTF-8">
+		<title>Rosières-Près-Troyes{% block title %} - {% endblock %}</title>
+		<link rel="icon" href="{{ asset("assets\images\Blason_Rosières-Près-Troyes.png") }}">
+		{# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+		<!-- CSS only -->
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
-        {% endblock %}
-
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-        {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
+			{{ encore_entry_link_tags('app') }}
+		{% endblock %}
+		<!-- JavaScript Bundle with Popper -->
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+		{% block javascripts %}
+			{{ encore_entry_script_tags('app') }}
+		{% endblock %}
+	</head>
+	<body>
+		<header>
+			<nav class="navbar">
+				<div class="container-fluid">
+					<a class="navbar-brand h5" href="{{ path("app_calendar") }}">
+						<img src="{{ asset("assets/images/Blason_Rosières-Près-Troyes.png") }}" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
+						Rosières-Près-Troyes{% block headerTitle %} - {% endblock %}
+					</a>
+					<ul class="nav justify-content-end">
+						<li class="nav-item">
+							<a class="nav-link" aria-current="page" href="#">Active</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">Link</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">Link</a>
+						</li>
+                        <div class="vr"></div>
+                        <li>
+                            <a class="nav-link" href="{{ path("app_login") }}">Se connecter</a>
+                        </li>
+					</ul>
+				</div>
+			</nav>
+		</header>
+		<main>
+			{% block body %}{% endblock %}
+		</main>
+		<footer style="background-color : #E5E4EB">
+			<p></p>
+		</footer>
+	</body>
 </html>
