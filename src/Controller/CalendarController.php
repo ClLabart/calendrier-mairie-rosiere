@@ -15,4 +15,10 @@ class CalendarController extends AbstractController
             'controller_name' => 'CalendarController',
         ]);
     }
+
+    #[Route('/blog', name:'app_blog')]
+    public function calender(): Response
+    {
+        return 'ok';
+    }
 }
