@@ -26,7 +26,7 @@
            value="{{ csrf_token('authenticate') }}"
     >
 
-    <p class="text-center"><a href="">Mot de passe oublié ? &#8594;</a></p>
+    <p class="text-center"><a href="{{ path("app_forgot_password_request") }}">Mot de passe oublié ? &#8594;</a></p>
     <p class="text-center"><a href="{{ path("app_register") }}">Pas de compte ? S'inscrire ici &#8594;</a></p>
 
     <button class="btn btn-lg btn-primary align-self-center" type="submit">
