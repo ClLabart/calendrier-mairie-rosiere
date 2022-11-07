@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -44,6 +46,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $address = null;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Date::class, orphanRemoval: true)]
+    private Collection $dates;
+
+    public function __construct()
+    {
+        $this->dates = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -171,6 +181,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setAddress(?string $address): self
     {
         $this->address = $address;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Date>
+     */
+    public function getDates(): Collection
+    {
+        return $this->dates;
+    }
+
+    public function addDate(Date $date): self
+    {
+        if (!$this->dates->contains($date)) {
+            $this->dates->add($date);
+            $date->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDate(Date $date): self
+    {
+        if ($this->dates->removeElement($date)) {
+            // set the owning side to null (unless already changed)
+            if ($date->getUser() === $this) {
+                $date->setUser(null);
+            }
+        }
 
         return $this;
     }
