@@ -43,7 +43,9 @@ class CalendarController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $date->setBlog();
             $date->setUser($this->getUser());
+
             $entityManager->persist($date);
             $entityManager->flush();
 

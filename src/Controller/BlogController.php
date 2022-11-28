@@ -26,6 +26,10 @@ class BlogController extends AbstractController
     #[Route('/blog/ajouter', name: 'app_blog_add')]
     public function ajouterBlog(Request $request, EntityManagerInterface $entityManager): Response
     {
+        if (!($this->getUser())) {
+            return $this->redirectToRoute('app_blog');
+        }
+
         $blog = new Blog();
         $form = $this->createForm(AddBlogType::class, $blog);
         $form->handleRequest($request);
@@ -34,7 +38,7 @@ class BlogController extends AbstractController
             $entityManager->persist($blog);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_blog');
+            return $this->redirectToRoute('app_blog'); //mettre id en parametre
         }
 
         return $this->render('blog/add_blog.html.twig', [

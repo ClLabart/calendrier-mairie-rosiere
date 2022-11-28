@@ -12,9 +12,8 @@
                     {{ form_start(addDateForm) }}
                     <div class="d-flex flex-column justify-content-center mb-5">
                         {{ form_row(addDateForm.title, {attr: {'class': 'titre'}, label: 'Titre'}) }}
-                        {{ addDateForm.dateStart|date("F jS \\a\\t g:ia") }}
-                        {{ addDateForm.dateEnd|date("F jS \\a\\t g:ia") }}
-                        {{ form_row(addDateForm.blog, {attr: {'class': 'blog'}, label: 'Blog'}) }}
+                        {{ form_row(addDateForm.dateStart) }}
+                        {{ form_row(addDateForm.dateEnd) }}
 
                         <button type="submit" class="btn btn-primary">Valider</button>
                     </div>

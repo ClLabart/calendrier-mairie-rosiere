@@ -24,11 +24,11 @@ class DateCalendarType extends AbstractType
                 'widget' => 'single_text',
                 'required' => false
             ])
-            ->add('blog', EntityType::class, [
+            /*->add('blog', EntityType::class, [
                 'class' => Blog::class,
                 'choice_label' => 'title',
                 'required' => false
-            ])
+            ])*/
         ;
     }
 
