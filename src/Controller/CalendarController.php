@@ -34,6 +34,10 @@ class CalendarController extends AbstractController
     #[Route('/date/ajouter', name: 'app_date_add')]
     public function ajouterDate(Request $request, EntityManagerInterface $entityManager): Response
     {
+        if (!($this->getUser())) {
+            return $this->redirectToRoute('app_calendar');
+        }
+
         $date = new Date();
         $form = $this->createForm(DateCalendarType::class, $date);
         $form->handleRequest($request);

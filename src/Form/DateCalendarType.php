@@ -15,11 +15,15 @@ class DateCalendarType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('dateStart', DateType::class)
+            ->add('title')
+            ->add('dateStart', DateType::class, [
+                'widget' => 'single_text',
+                'required' => true
+            ])
             ->add('dateEnd', DateType::class, [
+                'widget' => 'single_text',
                 'required' => false
             ])
-            ->add('title')
             ->add('blog', EntityType::class, [
                 'class' => Blog::class,
                 'choice_label' => 'title',
