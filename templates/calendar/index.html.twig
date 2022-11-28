@@ -5,8 +5,17 @@
 {% block headerTitle %}{{ parent() }}Calendrier{% endblock %}
 
 {% block body %}
-
     <div id="calendar"></div>
+
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="CrudDate" aria-labelledby="CrudDateLabel">
+        <div class="offcanvas-header">
+            <h5 id="CrudDateLabel">Offcanvas right</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            ...
+        </div>
+    </div>
 {% endblock %}
 
 {% block js %}
@@ -72,8 +81,13 @@
 
                 },
                 select: function(info) {
-                    console.log(info)
-                    console.log('selected ' + info.startStr + ' to ' + info.endStr);
+                    let dates = []
+                    calendar.getEvents().forEach(element => {
+                        if ((element.start >= info.start && element.start <= info.end) || (element.end >= info.start && element.end <= info.end)) {
+                            dates.push(element)
+                        }
+                    });
+                    console.log(dates)
                 }
             });
             calendar.render();
