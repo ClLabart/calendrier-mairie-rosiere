@@ -21,3 +21,5 @@
 /symfony.exe
 
 /migrations/
+
+/composer.lock

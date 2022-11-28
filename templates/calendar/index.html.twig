@@ -61,6 +61,14 @@
                         allDay : false
                     }
                 ],
+                eventClick: function(calEvent, jsEvent, view) {
+
+                    console.log(calEvent.event.title);
+                    console.log(calEvent.event);
+                    console.log(calEvent.jsEvent);
+                    console.log(calEvent.view.title);
+
+                }
             });
             calendar.render();
         });
