@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Date;
 use App\Entity\Blog;
-use App\Form\DateType;
+use App\Form\DateCalendarType;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -35,7 +35,7 @@ class CalendarController extends AbstractController
     public function ajouterDate(Request $request, EntityManagerInterface $entityManager): Response
     {
         $date = new Date();
-        $form = $this->createForm(DateType::class, $date);
+        $form = $this->createForm(DateCalendarType::class, $date);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
