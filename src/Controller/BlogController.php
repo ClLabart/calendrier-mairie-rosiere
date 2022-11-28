@@ -33,6 +33,8 @@ class BlogController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($blog);
             $entityManager->flush();
+
+            return $this->redirectToRoute('app_blog');
         }
 
         return $this->render('blog/add_blog.html.twig', [

@@ -13,7 +13,7 @@
                 </div>
                 <div class="col-12">
                     {% for key, blog in blogs %}
-                        {{ key }} / {{ blog.title }} / {{ blog.text }} / {{ blog.date }} / <img src="{{ vich_uploader_asset(blog, 'image') }}" alt="{{ blog.imageName }}">
+                        {{ key }} / {{ blog.title }} / {{ blog.text }} / {{ blog.date }} / <img src="{{ vich_uploader_asset(blog, 'image') }}" alt="{{ blog.imageName }}" class="img-thumbnail">
                     {% endfor %}
                 </div>
             </div>

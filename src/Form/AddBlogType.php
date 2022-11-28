@@ -18,7 +18,6 @@ class AddBlogType extends AbstractType
             ->add('image', VichFileType::class, [
                 'required' => true,
             ])
-            //->add('date')
         ;
     }
 
