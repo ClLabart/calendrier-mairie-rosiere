@@ -16,24 +16,26 @@
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
                 themeSystem: 'bootstrap5',
+                selectable: true,
                 events: [
                     {% for event in globalDate %}
-                        {
-                            title: {{event.date.title}},
-                            color: "darkred",
-                            start: "{{ event.date.dateStart }}",
-                            {% if event.date.dateEnd is defined %}
-                                end: "{{ event.date.dateEnd }}",
-                            {% else %}
-                                allDay : false,
-                            {% endif %}
-                            id: {{event.id}},
-                        },
+                        {% if event.date != null %}
+                            {
+                                title: {{ event.date.title }},
+                                color: "darkred",
+                                start: "{{ event.date.dateStart }}",
+                                {% if event.date.dateEnd is defined %}
+                                    end: "{{ event.date.dateEnd }}",
+                                {% else %}
+                                    allDay : false,
+                                {% endif %}
+                                id: {{ event.id }},
+                            },
+                        {% endif %}
                     {% endfor %}
                     {% for event in personalDate  %}
                         {
                             title: {{ event.title }},
-                            color: "darkred",
                             start: "{{ event.dateStart }}",
                             {% if event.date.dateEnd is defined %}
                                 end: "{{ event.dateEnd }}",
@@ -68,6 +70,9 @@
                     console.log(calEvent.jsEvent);
                     console.log(calEvent.view.title);
 
+                },
+                select: function(info) {
+                    console.log('selected ' + info.startStr + ' to ' + info.endStr);
                 }
             });
             calendar.render();
