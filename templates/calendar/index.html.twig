@@ -23,9 +23,9 @@
                             {
                                 title: {{ event.date.title }},
                                 color: "darkred",
-                                start: "{{ event.date.dateStart }}",
-                                {% if event.date.dateEnd is defined %}
-                                    end: "{{ event.date.dateEnd }}",
+                                start: "{{ event.date.dateStart|date("Y-m-d") }}",
+                                {% if event.date.dateEnd|date("Y-m-d") != null %}
+                                    end: "{{ event.date.dateEnd|date("Y-m-d") }}",
                                 {% else %}
                                     allDay : false,
                                 {% endif %}
@@ -36,9 +36,9 @@
                     {% for event in personalDate  %}
                         {
                             title: {{ event.title }},
-                            start: "{{ event.dateStart }}",
-                            {% if event.date.dateEnd is defined %}
-                                end: "{{ event.dateEnd }}",
+                            start: "{{ event.dateStart|date("Y-m-d") }}",
+                            {% if event.dateEnd|date("Y-m-d") != null %}
+                                end: "{{ event.dateEnd|date("Y-m-d") }}",
                             {% else %}
                                 allDay : false,
                             {% endif %}
