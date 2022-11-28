@@ -15,11 +15,14 @@ class DateType extends AbstractType
     {
         $builder
             ->add('dateStart', DateType::class)
-            ->add('dateEnd', DateType::class)
+            ->add('dateEnd', DateType::class, [
+                'required' => false
+            ])
             ->add('title')
             ->add('blog', EntityType::class, [
                 'class' => Blog::class,
                 'choice_label' => 'title',
+                'required' => false
             ])
         ;
     }
