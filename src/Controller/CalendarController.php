@@ -27,10 +27,4 @@ class CalendarController extends AbstractController
             'personalDate' => $personalDate
         ]);
     }
-
-    #[Route('/blog', name:'app_blog')]
-    public function calender(): Response
-    {
-        return 'ok';
-    }
 }

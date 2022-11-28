@@ -6,7 +6,7 @@ vich_uploader:
 
     mappings:
         blog:
-            uri_prefix: /images/blog
+            uri_prefix: assets/images/blog
             upload_destination: '%kernel.project_dir%/public/assets/images/blog'
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
 

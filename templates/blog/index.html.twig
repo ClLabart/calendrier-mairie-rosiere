@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }}Blog{% endblock %}
+
+{% block headerTitle %}{{ parent() }}Blog{% endblock %}
+
+{% block body %}
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <a href="{{ path('app_blog_add') }}">Publier un article de blog</a>
+                </div>
+                <div class="col-12">
+                    {% for key, blog in blogs %}
+                        {{ key }} / {{ blog.title }} / {{ blog.text }} / {{ blog.date }} / <img src="{{ vich_uploader_asset(blog, 'image') }}" alt="{{ blog.imageName }}">
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

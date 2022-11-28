@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }}Blog{% endblock %}
+
+{% block headerTitle %}{{ parent() }}Blog{% endblock %}
+
+{% block body %}
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <a href="{{ path('app_blog_add') }}">Voir les articles de blog</a>
+                </div>
+                <div class="col-12">
+                    {{ form_start(addBlogForm) }}
+                        <div class="d-flex flex-column justify-content-center mb-5">
+                            {{ form_widget(addBlogForm) }}
+                            <button type="submit" class="btn btn-primary">Envoyer</button>
+                        </div>
+                    {{ form_end(addBlogForm) }}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
