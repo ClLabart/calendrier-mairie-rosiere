@@ -20,4 +20,4 @@
 ###< symfony/phpunit-bridge ###
 /symfony.exe
 
-/migrations
+/migrations/
