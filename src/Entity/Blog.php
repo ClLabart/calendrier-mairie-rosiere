@@ -2,11 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\BlogRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use App\Repository\BlogRepository;
 
 #[ORM\Entity(repositoryClass: BlogRepository::class)]
+#[Vich\Uploadable]
 class Blog
 {
     #[ORM\Id]
@@ -20,11 +23,17 @@ class Blog
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $text = null;
 
-    #[ORM\Column(type: Types::BLOB, nullable: true)]
-    private $image = null;
+    #[Vich\UploadableField(mapping: 'blog', fileNameProperty: 'imageName')]
+    private ?File $image = null;
 
     #[ORM\OneToOne(mappedBy: 'blog', cascade: ['persist', 'remove'])]
     private ?Date $date = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $imageDate = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $imageName = null;
 
     public function getId(): ?int
     {
@@ -55,16 +64,20 @@ class Blog
         return $this;
     }
 
-    public function getImage()
-    {
-        return $this->image;
-    }
-
-    public function setImage($image): self
+    public function setImage(?File $image = null): void
     {
         $this->image = $image;
 
-        return $this;
+        if (null !== $image) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->imageDate = new \DateTimeImmutable();
+        }
+    }
+
+    public function getImage(): ?File
+    {
+        return $this->image;
     }
 
     public function getDate(): ?Date
@@ -87,5 +100,15 @@ class Blog
         $this->date = $date;
 
         return $this;
+    }
+
+    public function setImageName(?string $imageName): void
+    {
+        $this->imageName = $imageName;
+    }
+
+    public function getImageName(): ?string
+    {
+        return $this->imageName;
     }
 }
