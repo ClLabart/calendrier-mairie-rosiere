@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
@@ -23,11 +24,16 @@ class RegistrationFormType extends AbstractType
             ->add('email', EmailType::class)
             ->add('firstname')
             ->add('lastname')
-            ->add('telephone', TelType::class)
-            ->add('birthdate', DateType::class, [
-                'widget' => 'single_text'
+            ->add('telephone', TelType::class, [
+                'required' => false
             ])
-            ->add('address')
+            ->add('birthdate', DateType::class, [
+                'widget' => 'single_text',
+                'required' => false
+            ])
+            ->add('address', TextType::class, [
+                'required' => false
+            ])
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [

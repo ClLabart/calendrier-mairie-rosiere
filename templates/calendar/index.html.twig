@@ -22,13 +22,26 @@
                             title: {{event.date.title}},
                             color: "darkred",
                             start: "{{ event.date.dateStart }}",
-                            {%  %}
-                            end: "{{ event.date.dateEnd }}",
+                            {% if event.date.dateEnd is defined %}
+                                end: "{{ event.date.dateEnd }}",
+                            {% else %}
+                                allDay : false,
+                            {% endif %}
                             id: {{event.id}},
-                        }
+                        },
                     {% endfor %}
                     {% for event in personalDate  %}
-
+                        {
+                            title: {{ event.title }},
+                            color: "darkred",
+                            start: "{{ event.dateStart }}",
+                            {% if event.date.dateEnd is defined %}
+                                end: "{{ event.dateEnd }}",
+                            {% else %}
+                                allDay : false,
+                            {% endif %}
+                            id: {{ event.id }},
+                        },
                     {% endfor %}
                     {
                         title  : 'event1',
