@@ -84,41 +84,22 @@
                     }
                 ],
                 select: function(info) {
-                    console.log('start : ' + info.start)
-                    console.log('end : ' + info.end)
-                    console.log(info.start.getDay())
-                    let infoStart = info.start.getUTCDate()
-                    let infoEnd = info.end.getUTCDate()
-                    console.log(info.start.getYear())
-                    console.log(info.start.getMonth())
-                    console.log(info.start.getDay())
-                    console.log('variable start')
-                    console.log(infoStart)
+                    let infoStart = info.start.getTime()
+                    let infoEnd = info.end.getTime()
                     let dates = []
                     calendar.getEvents().forEach(element => {
-                        let elementStart = element.start.getUTCDate()
-                        // ! fonctionne pas
+                        let elementStart = element.start.getTime()
                         if (element.end == null) {
-                            if (elementStart === infoStart) {
-                                console.log('egal')
-                                console.log(elementStart)
-                                console.log(infoStart)
-                                console.log('fin égal')
+                            if (elementStart >= infoStart && elementStart < infoEnd) {
                                 dates.push(element)
                             }
-                        } else if ((element.start >= info.start && element.start <= info.end) || (element.end >= info.start && element.end <= info.end)) {
-                            
-                            let elementEnd = element.end.getUTCDate()
-                            
-                            dates.push(element)
-                            console.log('element start : ' + element.start)
-                            console.log('element end : ' + element.end)
-                            console.log(element)
-                            console.log(info)
-                            console.log(typeof(element.start))
-                            console.log(typeof(info.start))
-                            console.log(element.start.getTime())
-                            console.log(info.start.getTime())
+                        } else {
+                            let elementEnd = element.end.getTime()
+                            if ((elementStart >= infoStart && elementStart < infoEnd) || (elementEnd > infoStart && elementEnd <= infoEnd)) {
+                                dates.push(element)
+                            } else if (elementStart < infoStart && elementEnd > infoEnd) {
+                                dates.push(element)
+                            }
                         }
                     });
                     manageDates(dates)
@@ -133,6 +114,9 @@
 
             function manageDates(dates) {
                 console.log(dates)
+                console.log('')
+                console.log('')
+                console.log('')
             }
         });
     </script>
