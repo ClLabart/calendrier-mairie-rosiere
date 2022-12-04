@@ -7,7 +7,7 @@
 {% block body %}
     <div id="calendar"></div>
 
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="CrudDate" aria-labelledby="CrudDateLabel">
+    <div data-bs-dismiss="offcanvas" class="offcanvas offcanvas-end" tabindex="-1" id="CrudDate" aria-labelledby="CrudDateLabel">
         <div class="offcanvas-header">
             <h5 id="CrudDateLabel">Offcanvas right</h5>
             <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -27,6 +27,7 @@
                 themeSystem: 'bootstrap5',
                 selectable: true,
                 events: [
+                    // affiche en double si la personne a fait l'article de blog 
                     {% for event in globalDate %}
                         {% if event.date != null %}
                             {
@@ -57,40 +58,82 @@
                     {
                         title  : 'event1',
                         color: "darkred",
-                        start  : '2022-11-01',
+                        start  : '2022-12-01',
                         id: 13,
                     },
                     {
                         title  : 'event2',
-                        start  : '2022-11-05',
-                        end    : '2022-11-07',
+                        start  : '2022-12-05',
+                        end    : '2022-12-08',
 
                     },
                     {
                         title  : 'event3',
-                        start  : '2022-11-09T12:30:00',
+                        start  : '2022-12-09T12:30:00',
                         allDay : false
+                    },
+                    {
+                        title  : 'event3bis',
+                        start  : '2022-12-19T12:30:00',
+                        allDay : true
+                    },
+                    {
+                        title : 'event4',
+                        start: '2022-12-15',
+                        end: '2022-12-28'
                     }
                 ],
-                eventClick: function(calEvent, jsEvent, view) {
-
-                    console.log(calEvent.event.title);
-                    console.log(calEvent.event);
-                    console.log(calEvent.jsEvent);
-                    console.log(calEvent.view.title);
-
-                },
                 select: function(info) {
+                    console.log('start : ' + info.start)
+                    console.log('end : ' + info.end)
+                    console.log(info.start.getDay())
+                    let infoStart = info.start.getUTCDate()
+                    let infoEnd = info.end.getUTCDate()
+                    console.log(info.start.getYear())
+                    console.log(info.start.getMonth())
+                    console.log(info.start.getDay())
+                    console.log('variable start')
+                    console.log(infoStart)
                     let dates = []
                     calendar.getEvents().forEach(element => {
-                        if ((element.start >= info.start && element.start <= info.end) || (element.end >= info.start && element.end <= info.end)) {
+                        let elementStart = element.start.getUTCDate()
+                        // ! fonctionne pas
+                        if (element.end == null) {
+                            if (elementStart === infoStart) {
+                                console.log('egal')
+                                console.log(elementStart)
+                                console.log(infoStart)
+                                console.log('fin égal')
+                                dates.push(element)
+                            }
+                        } else if ((element.start >= info.start && element.start <= info.end) || (element.end >= info.start && element.end <= info.end)) {
+                            
+                            let elementEnd = element.end.getUTCDate()
+                            
                             dates.push(element)
+                            console.log('element start : ' + element.start)
+                            console.log('element end : ' + element.end)
+                            console.log(element)
+                            console.log(info)
+                            console.log(typeof(element.start))
+                            console.log(typeof(info.start))
+                            console.log(element.start.getTime())
+                            console.log(info.start.getTime())
                         }
                     });
-                    console.log(dates)
+                    manageDates(dates)
+                },
+                eventClick: function (selected) {
+                    // calendar.select() => selected dates
+                    //console.log('selected')
+                    //console.log(selected)
                 }
             });
             calendar.render();
+
+            function manageDates(dates) {
+                console.log(dates)
+            }
         });
     </script>
 {% endblock %}

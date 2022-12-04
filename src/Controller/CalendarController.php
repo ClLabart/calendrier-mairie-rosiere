@@ -24,6 +24,9 @@ class CalendarController extends AbstractController
         if ($this->getUser()) {
             $personalDate = $doctrine->getRepository(Date::class)->findByUser($this->getUser()->getId());
         }
+        // ! Supprimer les dates de personnal date si elles sont présentent dans global date
+        // php : !array_diff()
+        // $result = !empty(array_intersect($people, $criminals));
 
         return $this->render('calendar/index.html.twig', [
             'globalDate' => $globalDate,

@@ -28,6 +28,7 @@ class Date
     private ?User $user = null;
 
     #[ORM\OneToOne(inversedBy: 'date', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Blog $blog = null;
 
     public function getId(): ?int
