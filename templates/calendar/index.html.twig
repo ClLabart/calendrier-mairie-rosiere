@@ -14,36 +14,38 @@
         </div>
         <div id="OffCanvas-Events" class="offcanvas-body">
             {% if app.user %}
-                <section id="listDates" class="h-50">
+                <section id="listDates" class="h-25">
                     {# Ici iront les dates #}
                 </section>
-                <section class="h-50">
+                <section class="h-75">
                 <hr>
                     <p class="text-center h-6 mb-2">Nouvel événement</p>
                     <div>
                     </div>
                     {{ form_start(form) }}
-                                {{ form_label(form.title) }}
-                                {{ form_widget(form.title) }}
+                        <div class="form-group text-center">
+                            {{ form_label(form.title) }}
+                            {{ form_widget(form.title) }}
+                        </div>
 
-                        <div class="form-group">
+                        <div class="form-group text-center" id="newDateStart">
                             {{ form_label(form.dateStart) }}
                             <button onclick="ManageHours(this)" type="button" class="btn btn-primary">Afficher l'heure</button>
                             {{ form_widget(form.dateStart) }}
                         </div>
 
-                        <div class="form-group form-check">
+                        <div class="form-group text-center form-check">
                             <input type="checkbox" class="form-check-input" id="newDateCheckbox" checked>
                             <label class="form-check-label" for="newDateCheckbox">Plusieurs jours ?</label>
                         </div>
 
-                        <div class="form-group" id="newDateEnd">
+                        <div class="form-group text-center" id="newDateEnd">
                             {{ form_label(form.dateEnd) }}
                             <button onclick="ManageHours(this)" type="button" class="btn btn-primary">Afficher l'heure</button>
                             {{ form_widget(form.dateEnd) }}
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group text-center m-3" id="submitButton">
                             {{ form_widget(form.Enregistrer) }}
                         </div>
                     {{ form_end(form) }}
@@ -108,8 +110,10 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             var listDates = document.getElementById("listDates")
-            var inputNewDateStart = document.getElementById("date_calendar_dateStart")
-            var inputNewDateEnd = document.getElementById("date_calendar_dateEnd")
+            
+            var inputNewDateStart = document.getElementById("date_time_end_calendar_dateStart")
+            var inputNewDateEnd = document.getElementById("date_time_end_calendar_dateEnd")
+            
             var bsOffcanvas = new bootstrap.Offcanvas(document.getElementById('CrudDate'))
             var calendarEl = document.getElementById('calendar')
             var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -168,10 +172,11 @@
                             }
                         }
                     });
+                    console.log('ok')
                     
                     {% if app.user %}
-                        inputNewDateStart.value = formatDate(info.start) + 'T00:00'
-                        inputNewDateEnd.value = formatDate(info.end) + 'T00:00'
+                        inputNewDateStart.value = formatDate(info.start)
+                        inputNewDateEnd.value = formatDateWithHours(info.end)
                     {% endif %}
 
                     manageDates(dates)
@@ -189,10 +194,13 @@
             {% if app.user %}
                 var checkboxDate = document.getElementById("newDateCheckbox")
                 var dateEndElement = document.getElementById("newDateEnd")
+                var submitButton = document.getElementById("submitButton")
                 checkboxDate.addEventListener("change", () => {
                     console.log(checkboxDate.checked)
                     if (checkboxDate.checked === true) {
+                        document.getElementById("submitButton").remove()
                         checkboxDate.parentNode.parentNode.append(dateEndElement)
+                        checkboxDate.parentNode.parentNode.append(submitButton)
                     } else {
                         document.getElementById("newDateEnd").remove()
                     }

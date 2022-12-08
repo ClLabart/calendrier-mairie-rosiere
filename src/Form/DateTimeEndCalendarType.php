@@ -19,7 +19,7 @@ class DateTimeEndCalendarType extends AbstractType
         ->add('title', TextType::class, [
             'label' => 'Titre',
             'label_attr' => ['class' => 'm-3'],
-            //'attr' => ['class' => 'form-control']
+            'attr' => ['class' => 'form-control']
         ])
         ->add('dateStart', DateType::class, [
             'widget' => 'single_text',
