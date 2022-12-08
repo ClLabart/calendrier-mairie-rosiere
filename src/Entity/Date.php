@@ -53,7 +53,7 @@ class Date
         return $this->dateEnd;
     }
 
-    public function setDateEnd(\DateTimeInterface $dateEnd): self
+    public function setDateEnd(\DateTimeInterface $dateEnd = null): self
     {
         $this->dateEnd = $dateEnd;
 

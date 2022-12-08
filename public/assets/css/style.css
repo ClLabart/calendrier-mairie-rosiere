@@ -1,3 +1,23 @@
+#listDates {
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+#OffCanvas-Events {
+    overflow:hidden;
+}
+
+#listDates::-webkit-scrollbar {
+    background:rgb(244, 244, 244);
+    border-radius: 50px;
+    width: 10px;
+}
+
+#listDates::-webkit-scrollbar-thumb {
+    background:rgb(222, 222, 222);
+    border-radius: 50px;
+}
+
 footer {
     background-color : #E5E4EB;
 }

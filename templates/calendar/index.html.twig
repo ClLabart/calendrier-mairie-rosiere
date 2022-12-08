@@ -7,31 +7,124 @@
 {% block body %}
     <div id="calendar"></div>
 
-    <div data-bs-dismiss="offcanvas" class="offcanvas offcanvas-end" tabindex="-1" id="CrudDate" aria-labelledby="CrudDateLabel">
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="CrudDate" aria-labelledby="CrudDateLabel">
         <div class="offcanvas-header">
-            <h5 id="CrudDateLabel">Offcanvas right</h5>
+            <p class="offcanvas-title h5" id="CrudDateLabel">Événements</p>
             <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
-        <div class="offcanvas-body">
-            ...
+        <div id="OffCanvas-Events" class="offcanvas-body">
+            {% if app.user %}
+                <section id="listDates" class="h-50">
+                    {# Ici iront les dates #}
+                </section>
+                <section class="h-50">
+                <hr>
+                    <p class="text-center h-6 mb-2">Nouvel événement</p>
+                    <div>
+                    </div>
+                    {{ form_start(form) }}
+                                {{ form_label(form.title) }}
+                                {{ form_widget(form.title) }}
+
+                        <div class="form-group">
+                            {{ form_label(form.dateStart) }}
+                            <button onclick="ManageHours(this)" type="button" class="btn btn-primary">Afficher l'heure</button>
+                            {{ form_widget(form.dateStart) }}
+                        </div>
+
+                        <div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" id="newDateCheckbox" checked>
+                            <label class="form-check-label" for="newDateCheckbox">Plusieurs jours ?</label>
+                        </div>
+
+                        <div class="form-group" id="newDateEnd">
+                            {{ form_label(form.dateEnd) }}
+                            <button onclick="ManageHours(this)" type="button" class="btn btn-primary">Afficher l'heure</button>
+                            {{ form_widget(form.dateEnd) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_widget(form.Enregistrer) }}
+                        </div>
+                    {{ form_end(form) }}
+                </section>
+            {% else %}
+                <section id="listDates" class="h-100">
+                    {# Ici iront les dates #}
+                </section>
+            {% endif %}
         </div>
     </div>
 {% endblock %}
 
 {% block js %}
     <script>
+        function ManageHours(e) {
+            let inputDate = e.nextElementSibling
+            if (inputDate.type === "date") {
+                let tempDate = inputDate.value + 'T00:00'
+                inputDate.type = "datetime-local"
+                inputDate.value = tempDate
+            } else {
+                let tempDate = inputDate.value.split('T')
+                inputDate.type = "date"
+                inputDate.value = tempDate[0]
+            }
+        }
+        
+        function stringToHTML(str) {
+            var parser = new DOMParser();
+            var doc = parser.parseFromString(str, 'text/html');
+            return doc.body;
+        }
+
+        function padTo2Digits(num) {
+            return num.toString().padStart(2, '0');
+        }
+
+        function formatDate(date = new Date()) {
+            return [
+                date.getFullYear(),
+                padTo2Digits(date.getMonth() + 1),
+                padTo2Digits(date.getDate()),
+            ].join('-');
+        }
+
+        function formatDateWithHours(date = new Date()) {
+            return [
+                date.getFullYear(),
+                padTo2Digits(date.getMonth() + 1),
+                padTo2Digits(date.getDate()),
+            ].join('-') + 'T' + [padTo2Digits(date.getHours()), padTo2Digits(date.getMinutes())].join(':');
+        }
+
+        {% if app.user %}
+        // TODO
+            // function ajax change dates on events
+            // rajouter un popup dire ok ou non
+        //code 403 si c'est pas l'event de l'utilisateur
+            // changer l'event en fonction 403 ou non 
+        {% endif %}
+
         document.addEventListener('DOMContentLoaded', function() {
-            var calendarEl = document.getElementById('calendar');
+            var listDates = document.getElementById("listDates")
+            var inputNewDateStart = document.getElementById("date_calendar_dateStart")
+            var inputNewDateEnd = document.getElementById("date_calendar_dateEnd")
+            var bsOffcanvas = new bootstrap.Offcanvas(document.getElementById('CrudDate'))
+            var calendarEl = document.getElementById('calendar')
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
                 themeSystem: 'bootstrap5',
                 selectable: true,
+                datesSet: function(e) {
+                    // ! TODO appel API 
+                    console.log(e);
+                },
                 events: [
-                    // affiche en double si la personne a fait l'article de blog 
                     {% for event in globalDate %}
                         {% if event.date != null %}
                             {
-                                title: {{ event.date.title }},
+                                title: "{{ event.date.title }}",
                                 color: "darkred",
                                 start: "{{ event.date.dateStart|date("Y-m-d") }}",
                                 {% if event.date.dateEnd|date("Y-m-d") != null %}
@@ -45,8 +138,8 @@
                     {% endfor %}
                     {% for event in personalDate  %}
                         {
-                            title: {{ event.title }},
-                            start: "{{ event.dateStart|date("Y-m-d") }}",
+                            title: "{{ event.title }}",
+                            start: "{{ event.dateStart|date("Y-m-d\\TH:i") }}",
                             {% if event.dateEnd|date("Y-m-d") != null %}
                                 end: "{{ event.dateEnd|date("Y-m-d") }}",
                             {% else %}
@@ -55,33 +148,6 @@
                             id: {{ event.id }},
                         },
                     {% endfor %}
-                    {
-                        title  : 'event1',
-                        color: "darkred",
-                        start  : '2022-12-01',
-                        id: 13,
-                    },
-                    {
-                        title  : 'event2',
-                        start  : '2022-12-05',
-                        end    : '2022-12-08',
-
-                    },
-                    {
-                        title  : 'event3',
-                        start  : '2022-12-09T12:30:00',
-                        allDay : false
-                    },
-                    {
-                        title  : 'event3bis',
-                        start  : '2022-12-19T12:30:00',
-                        allDay : true
-                    },
-                    {
-                        title : 'event4',
-                        start: '2022-12-15',
-                        end: '2022-12-28'
-                    }
                 ],
                 select: function(info) {
                     let infoStart = info.start.getTime()
@@ -102,21 +168,76 @@
                             }
                         }
                     });
+                    
+                    {% if app.user %}
+                        inputNewDateStart.value = formatDate(info.start) + 'T00:00'
+                        inputNewDateEnd.value = formatDate(info.end) + 'T00:00'
+                    {% endif %}
+
                     manageDates(dates)
                 },
                 eventClick: function (selected) {
-                    // calendar.select() => selected dates
-                    //console.log('selected')
-                    //console.log(selected)
+                    if (selected.event.end !== null) {
+                        calendar.select(selected.event.start, selected.event.end)
+                    } else {
+                        calendar.select(selected.event.start)
+                    }
                 }
             });
             calendar.render();
 
+            {% if app.user %}
+                var checkboxDate = document.getElementById("newDateCheckbox")
+                var dateEndElement = document.getElementById("newDateEnd")
+                checkboxDate.addEventListener("change", () => {
+                    console.log(checkboxDate.checked)
+                    if (checkboxDate.checked === true) {
+                        checkboxDate.parentNode.parentNode.append(dateEndElement)
+                    } else {
+                        document.getElementById("newDateEnd").remove()
+                    }
+                })
+            {% endif %}
+
             function manageDates(dates) {
-                console.log(dates)
-                console.log('')
-                console.log('')
-                console.log('')
+                listDates.innerHTML = ''
+                bsOffcanvas.show()
+                dates.forEach((date) => {
+                    console.log(date)
+                    let html = `
+                    <article class="row mb-4">
+                    <div class="col-1 d-flex"><div class="vr"></div></div>
+                    <div class="col-11">
+                    <p class="h6 text-center text-primary">` + date.title + `</p>
+                    <form class="form-inline mb-1">
+                    <label class="m-3" for="dateStart` + date.id + `">Début :</label>
+                    <button onclick="ManageHours(this)" type="button" class="btn btn-primary">Afficher l'heure</button>
+                    <input class="form-control w-75" name="dateStart` + date.id + `" type="`;
+                    if (date.allDay === true) {
+                        html += "date";
+                        html += `" value="` + formatDate(date.start) + `">`;
+                    } else {
+                        html += "datetime-local";
+                        html += `" value="` + formatDateWithHours(date.start) + `">`;
+                    }
+                    if (date.end) {
+                        html += `<label class="m-3" for="dateEnd` + date.id + `">Fin :</label>
+                        <button onclick="ManageHours(this)" type="button" class="btn btn-primary">Afficher l'heure</button>
+                        <input class="form-control w-75" name="dateEnd` + date.id + `" type="`;
+                        if (date.allDay === true) {
+                            html += "date";
+                            html +=`" value="` + formatDate(date.end) + `">`;
+                        } else {
+                            html += "datetime-local";
+                            html +=`" value="` + formatDateWithHours(date.end) + `">`;
+                        }
+                    }
+                    html +=`</form>
+                    </div>
+                    </article>`;
+                    let dom = stringToHTML(html)
+                    listDates.append(dom)
+                })
             }
         });
     </script>
