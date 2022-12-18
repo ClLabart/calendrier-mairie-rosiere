@@ -23,6 +23,14 @@
 		{% block javascripts %}
 			{{ encore_entry_script_tags('app') }}
 		{% endblock %}
+		<script>
+			// TODO notifications
+			// {% for message in app.flashes('notice') %}
+			// 	<div class="flash-notice">
+			// 		{{ message }}
+			// 	</div>
+			// {% endfor %}
+		</script>
 	</head>
 	<body>
 		<header>
@@ -47,15 +55,15 @@
 										<a class="dropdown-item" href="#">Importer CSV (jcrois)</a>
 									</li>
 									{# <li>
-																			<a class="dropdown-item" href="#">Ajouter</a>
-																		</li>
-																		<li>
-																			<a class="dropdown-item" href="#">Another action</a>
-																		</li>
-																		<li><hr class="dropdown-divider"></li>
-																		<li>
-																			<a class="dropdown-item" href="#">Something else here</a>
-																		</li> #}
+										<a class="dropdown-item" href="#">Ajouter</a>
+									</li>
+									<li>
+										<a class="dropdown-item" href="#">Another action</a>
+									</li>
+									<li><hr class="dropdown-divider"></li>
+									<li>
+										<a class="dropdown-item" href="#">Something else here</a>
+									</li> #}
 								</ul>
 							</li>
 						{% else %}

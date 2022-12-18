@@ -106,6 +106,10 @@
             // rajouter un popup dire ok ou non
         //code 403 si c'est pas l'event de l'utilisateur
             // changer l'event en fonction 403 ou non 
+            function changeEvent(data, props) {
+
+            }
+            
         {% endif %}
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -120,10 +124,6 @@
                 initialView: 'dayGridMonth',
                 themeSystem: 'bootstrap5',
                 selectable: true,
-                datesSet: function(e) {
-                    // ! TODO appel API 
-                    console.log(e);
-                },
                 events: [
                     {% for event in globalDate %}
                         {% if event.date != null %}
@@ -172,8 +172,7 @@
                             }
                         }
                     });
-                    console.log('ok')
-                    
+
                     {% if app.user %}
                         inputNewDateStart.value = formatDate(info.start)
                         inputNewDateEnd.value = formatDateWithHours(info.end)
@@ -189,7 +188,34 @@
                     }
                 }
             });
-            calendar.render();
+            
+            calendar.render()
+
+            var holidays = [];
+
+            async function getHolidays() {
+                try {
+                    // fetch les données de l'api des jours fériés
+                    const response = await fetch("https://calendrier.api.gouv.fr/jours-feries/metropole.json")
+                    const json = await response.json()
+                    Object.entries(json).forEach((element) => {
+                        calendar.addEvent({
+                            title: element[1],
+                            start: element[0],
+                            color: "pink",
+                            textColor: "black",
+                            allDay: true,
+                            extendedProps: "h"
+                        })
+                        calendar.render()
+                    })
+                } catch (e) {
+                    console.error(e)
+                }
+            }
+
+            // fetch les données de l'api des jours fériés
+            getHolidays()
 
             {% if app.user %}
                 var checkboxDate = document.getElementById("newDateCheckbox")
@@ -216,32 +242,34 @@
                     <article class="row mb-4">
                     <div class="col-1 d-flex"><div class="vr"></div></div>
                     <div class="col-11">
-                    <p class="h6 text-center text-primary">` + date.title + `</p>
-                    <form class="form-inline mb-1">
-                    <label class="m-3" for="dateStart` + date.id + `">Début :</label>
-                    <button onclick="ManageHours(this)" type="button" class="btn btn-primary">Afficher l'heure</button>
-                    <input class="form-control w-75" name="dateStart` + date.id + `" type="`;
-                    if (date.allDay === true) {
-                        html += "date";
-                        html += `" value="` + formatDate(date.start) + `">`;
-                    } else {
-                        html += "datetime-local";
-                        html += `" value="` + formatDateWithHours(date.start) + `">`;
-                    }
-                    if (date.end) {
-                        html += `<label class="m-3" for="dateEnd` + date.id + `">Fin :</label>
+                    <p class="h6 text-center text-primary">` + date.title + `</p>`
+                    if (date.extendedProps[0] !== "h") {
+                        html += `<form class="form-inline mb-1">
+                        <label class="m-3" for="dateStart` + date.id + `">Début :</label>
                         <button onclick="ManageHours(this)" type="button" class="btn btn-primary">Afficher l'heure</button>
-                        <input class="form-control w-75" name="dateEnd` + date.id + `" type="`;
+                        <input class="form-control w-75" name="dateStart` + date.id + `" type="`;
                         if (date.allDay === true) {
                             html += "date";
-                            html +=`" value="` + formatDate(date.end) + `">`;
+                            html += `" value="` + formatDate(date.start) + `">`;
                         } else {
                             html += "datetime-local";
-                            html +=`" value="` + formatDateWithHours(date.end) + `">`;
+                            html += `" value="` + formatDateWithHours(date.start) + `">`;
                         }
+                        if (date.end) {
+                            html += `<label class="m-3" for="dateEnd` + date.id + `">Fin :</label>
+                            <button onclick="ManageHours(this)" type="button" class="btn btn-primary">Afficher l'heure</button>
+                            <input class="form-control w-75" name="dateEnd` + date.id + `" type="`;
+                            if (date.allDay === true) {
+                                html += "date";
+                                html +=`" value="` + formatDate(date.end) + `">`;
+                            } else {
+                                html += "datetime-local";
+                                html +=`" value="` + formatDateWithHours(date.end) + `">`;
+                            }
+                        }
+                        html +=`</form>`
                     }
-                    html +=`</form>
-                    </div>
+                    html += `</div>
                     </article>`;
                     let dom = stringToHTML(html)
                     listDates.append(dom)
