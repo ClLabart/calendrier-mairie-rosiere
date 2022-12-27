@@ -27,7 +27,6 @@ class Blog
     private ?File $image = null;
 
     #[ORM\OneToOne(mappedBy: 'blog', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: true)]
     private ?Date $date = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]

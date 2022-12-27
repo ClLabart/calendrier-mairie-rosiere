@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Date;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use function PHPUnit\Framework\assertNotNull;
 
 /**
  * @extends ServiceEntityRepository<Date>
@@ -37,6 +38,10 @@ class DateRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function trieDateQueryBuilder() {
+        return $this->findBy(['blog' => null]);
     }
 
 //    /**

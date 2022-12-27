@@ -5,17 +5,33 @@
 {% block headerTitle %}{{ parent() }}Blog{% endblock %}
 
 {% block body %}
-    <section>
+    <section class="mb-4 mt-4">
         <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <a href="{{ path('app_blog_add') }}">Publier un article de blog</a>
-                </div>
-                <div class="col-12">
-                    {% for key, blog in blogs %}
-                        {{ key }} / {{ blog.title }} / {{ blog.text }} / {{ blog.date }} / <img src="{{ vich_uploader_asset(blog, 'image') }}" alt="{{ blog.imageName }}" class="img-thumbnail">
-                    {% endfor %}
-                </div>
+            <div class="row g-3">
+                {% if app.user %}
+                    <div class="col-12">
+                        <a href="{{ path('app_blog_add') }}">Publier un article de blog</a>
+                    </div>
+                {% endif %}
+                {% for key, blog in blogs %}
+                    <div class="col-3">
+                        <div class="card">
+                            <img src="{{ vich_uploader_asset(blog, 'image') }}" class="card-img-top" alt="{{ blog.imageName }}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ blog.title }}</h5>
+                                <p class="card-text">{{ blog.text }}</p>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                {% if blog.date %}
+                                    <li class="list-group-item">{{ blog.date.title }}<br>Du {{ blog.date.dateStart|date("d/m/Y") }} au {{ blog.date.dateEnd|date("d/m/Y") }}</li>
+                                {% endif %}
+                            </ul>
+{#                            <div class="card-body">#}
+{#                                <a href="{{ path('app_blog') }}" class="card-link">xxxx</a>#}
+{#                            </div>#}
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
         </div>
     </section>

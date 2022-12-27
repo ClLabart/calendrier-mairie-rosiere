@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Blog;
 use App\Form\AddBlogType;
+use App\Repository\DateRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,7 +25,7 @@ class BlogController extends AbstractController
     }
 
     #[Route('/blog/ajouter', name: 'app_blog_add')]
-    public function ajouterBlog(Request $request, EntityManagerInterface $entityManager): Response
+    public function ajouterBlog(Request $request, EntityManagerInterface $entityManager, DateRepository $dateRepository): Response
     {
         if (!($this->getUser())) {
             return $this->redirectToRoute('app_blog');
@@ -41,8 +42,11 @@ class BlogController extends AbstractController
             return $this->redirectToRoute('app_blog'); //mettre id en parametre
         }
 
+        $dateNull = $dateRepository->trieDateQueryBuilder();
+
         return $this->render('blog/add_blog.html.twig', [
             'addBlogForm' => $form->createView(),
+            'dateNull' => $dateNull,
         ]);
     }
 }

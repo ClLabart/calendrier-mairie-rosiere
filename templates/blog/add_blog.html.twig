@@ -5,19 +5,43 @@
 {% block headerTitle %}{{ parent() }}Blog{% endblock %}
 
 {% block body %}
-    <section>
+    <section class="mb-5 mt-5">
         <div class="container">
             <div class="row">
-                <div class="col-12">
-                    <a href="{{ path('app_blog_add') }}">Voir les articles de blog</a>
-                </div>
-                <div class="col-12">
-                    {{ form_start(addBlogForm) }}
-                        <div class="d-flex flex-column justify-content-center mb-5">
-                            {{ form_widget(addBlogForm) }}
-                            <button type="submit" class="btn btn-primary">Envoyer</button>
+                <div class="col-12 mb-5">
+                    <h1 class="mb-3">Créer un nouvel article de blog</h1>
+                    {{ form_start(addBlogForm, {'attr': {'class': 'add-blog'}}) }}
+                        <div class="d-flex flex-column justify-content-center">
+                            <div class="form-floating mb-3">
+                                {{ form_widget(addBlogForm.title) }}
+                                {{ form_label(addBlogForm.title) }}
+                            </div>
+                            <div class="form-floating mb-3">
+                                {{ form_widget(addBlogForm.text) }}
+                                {{ form_label(addBlogForm.text) }}
+                            </div>
+                            <div class="input-group mb-3 flex-nowrap">
+                                {{ form_label(addBlogForm.image) }}
+                                {{ form_widget(addBlogForm.image) }}
+                            </div>
+                            <div class="input-group mb-3">
+                                <div class="form-floating">
+                                    {% if dateNull %}
+                                        {{ form_widget(addBlogForm.date) }}
+                                        {{ form_label(addBlogForm.date) }}
+                                    {% else %}
+                                        {{ form_widget(addBlogForm.date, {'attr': {'disabled': 'disabled'}}) }}
+                                        {{ form_label(addBlogForm.date) }}
+                                    {% endif %}
+                                </div>
+                                <a href="{{ path('app_calendar') }}" class="btn btn-outline-success d-flex align-items-center">Créer un nouvel événement</a>
+                            </div>
+                            {{ form_row(addBlogForm.save, {'attr': {'class': 'btn btn-primary'}}) }}
                         </div>
                     {{ form_end(addBlogForm) }}
+                </div>
+                <div class="col-12">
+                    <a class="btn btn-dark" href="{{ path('app_blog') }}"><i class="fa-solid fa-arrow-left"></i> Retour sur les articles de blog</a>
                 </div>
             </div>
         </div>
