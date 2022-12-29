@@ -86,7 +86,8 @@
                     {% endif %}
                 </div>
                 <div class="col-12 d-flex flex-column align-items-start">
-                    <a class="btn btn-danger mb-3" href="{{ path('app_logout') }}">Déconnexion</a>
+                    <a class="btn btn-danger mb-3" href="{{ path('app_delete_user') }}"><i class="fa-solid fa-triangle-exclamation"></i> Supprimer le compte</a>
+                    <a class="btn btn-warning mb-3" href="{{ path('app_logout') }}"><i class="fa-solid fa-arrow-right-from-bracket"></i> Déconnexion</a>
                     <a class="btn btn-dark" href="{{ path('app_calendar') }}"><i class="fa-solid fa-arrow-left"></i> Retour sur le calendrier</a>
                 </div>
             </div>
