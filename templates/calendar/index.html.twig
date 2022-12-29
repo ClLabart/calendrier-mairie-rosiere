@@ -5,7 +5,14 @@
 {% block headerTitle %}{{ parent() }}Calendrier{% endblock %}
 
 {% block body %}
-    <div id="calendar"></div>
+    <div class="container mb-5 mt-5">
+        <div class="row">
+            <div class="col-12">
+                <div id="calendar"></div>
+            </div>
+        </div>
+    </div>
+
 
     <div class="offcanvas offcanvas-end" tabindex="-1" id="CrudDate" aria-labelledby="CrudDateLabel">
         <div class="offcanvas-header">
