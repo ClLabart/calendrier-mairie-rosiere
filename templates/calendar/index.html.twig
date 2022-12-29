@@ -137,7 +137,11 @@
                             {
                                 title: "{{ event.date.title }}",
                                 color: "darkred",
-                                start: "{{ event.date.dateStart|date("Y-m-d") }}",
+                                {% if event.date.dateStart|date("H:i") == "00:00" %}
+                                    start: "{{ event.date.dateStart|date("Y-m-d") }}",
+                                {% else %}
+                                    start: "{{ event.date.dateStart|date("Y-m-d H:i") }}",
+                                {% endif %}
                                 {% if event.date.dateEnd|date("Y-m-d") != null %}
                                     end: "{{ event.date.dateEnd|date("Y-m-d") }}",
                                 {% else %}
