@@ -55,8 +55,8 @@ class AddBlogType extends AbstractType
                 'empty_data' => 'test'
             ])
             ->add('save', SubmitType::class, [
-                'label' => 'Créer l\'article de blog'],
-            )
+                'label' => 'Créer l\'article de blog'
+            ])
         ;
     }
 

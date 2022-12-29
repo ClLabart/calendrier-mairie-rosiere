@@ -5,61 +5,66 @@
 {% block headerTitle %}{{ parent() }}Inscription{% endblock %}
 
 {% block body %}
-    <h1 class="text-center">Inscription</h1>
-    {{ form_start(registrationForm) }}
-        <div class="d-flex flex-column justify-content-center mb-5">
-            {{ form_row(registrationForm.email, {
-                attr: {
-                    'class': 'form-control'
-                },
-                label: 'E-mail'
-            }) }}
-            {{ form_row(registrationForm.plainPassword, {
-                label: 'Mot de passe',
-                attr: {
-                    'class': 'form-control'
-                }
-            }) }}
-            {{ form_row(registrationForm.firstname, {
-                label: 'Prénom',
-                attr: {
-                    'class': 'form-control'
-                }
-            }) }}
-            {{ form_row(registrationForm.lastname, {
-                label: 'Nom de famille',
-                attr: {
-                    'class': 'form-control'
-                }
-            }) }}
-            {{ form_row(registrationForm.telephone, {
-                label: 'Téléphone',
-                attr: {
-                    'class': 'form-control'
-                }
-            }) }}
-            {{ form_row(registrationForm.birthdate, {
-                label: 'Date de naissance',
-                attr: {
-                    'class': 'form-control'
-                }
-            }) }}
-            {{ form_row(registrationForm.address, {
-                label: 'Adresse',
-                attr: {
-                    'class': 'form-control'
-                }
-            }) }}
+    <section class="mb-5 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 mb-5">
+                    <h1 class="text-center mb-4"><i class="fa-solid fa-user-plus"></i> Inscription</h1>
 
+                    {{ form_start(registrationForm) }}
+                        <div class="d-flex flex-column">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-floating mb-3">
+                                        {{ form_widget(registrationForm.firstname) }}
+                                        {{ form_label(registrationForm.firstname) }}
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-floating mb-3">
+                                        {{ form_widget(registrationForm.lastname) }}
+                                        {{ form_label(registrationForm.lastname) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-floating mb-3">
+                                {{ form_widget(registrationForm.email) }}
+                                {{ form_label(registrationForm.email) }}
+                            </div>
+                            <div class="form-floating mb-3">
+                                {{ form_widget(registrationForm.plainPassword) }}
+                                {{ form_label(registrationForm.plainPassword) }}
+                            </div>
+                            <div class="form-floating mb-3">
+                                {{ form_widget(registrationForm.telephone) }}
+                                {{ form_label(registrationForm.telephone) }}
+                            </div>
+                            <div class="form-floating mb-3">
+                                {{ form_widget(registrationForm.birthdate) }}
+                                {{ form_label(registrationForm.birthdate) }}
+                            </div>
+                            <div class="form-floating mb-3">
+                                {{ form_widget(registrationForm.address) }}
+                                {{ form_label(registrationForm.address) }}
+                            </div>
 
-            {{ form_row(registrationForm.agreeTerms, {
-                label: 'Accepter les conditions d\'utilisation',
-            }) }}
+                            <div class="input-group mb-3">
+                                <div class="input-group-text">
+                                    {{ form_widget(registrationForm.agreeTerms) }}
+                                </div>
+                                {{ form_label(registrationForm.agreeTerms) }}
+                            </div>
 
-            <p class="text-center"><a href="{{ path("app_login") }}">Vous avez déjà un compte ? Se connecter ici &#8594;</a></p>
-
-            <button type="submit" class="btn btn-primary">Inscription</button>
+                            <div class="d-flex justify-content-center">
+                                {{ form_row(registrationForm.save, {'attr': {'class': 'btn btn-primary'}}) }}
+                            </div>
+                        </div>
+                    {{ form_end(registrationForm) }}
+                </div>
+                <div class="col-12">
+                    <a class="btn btn-dark" href="{{ path('app_login') }}"><i class="fa-solid fa-arrow-left"></i> Retour sur la page de connexion</a>
+                </div>
+            </div>
         </div>
-
-    {{ form_end(registrationForm) }}
+    </section>
 {% endblock %}

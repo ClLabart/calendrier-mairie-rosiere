@@ -5,30 +5,33 @@
 {% block headerTitle %}{{ parent() }}Blog{% endblock %}
 
 {% block body %}
-    <section class="mb-4 mt-4">
+    <section class="mb-5 mt-5">
         <div class="container">
             <div class="row g-3">
-                {% if app.user %}
-                    <div class="col-12">
-                        <a href="{{ path('app_blog_add') }}">Publier un article de blog</a>
-                    </div>
-                {% endif %}
+                <div class="col-12 mb-3">
+                    <h1 class="mb-2 text-center">Les articles de blog</h1>
+                    {% if app.user %}
+                        <div class="d-flex justify-content-end">
+                            <a class="btn btn-success" href="{{ path('app_blog_add') }}">Publier un article de blog <i class="fa-solid fa-arrow-right"></i></a>
+                        </div>
+                    {% endif %}
+                </div>
                 {% for key, blog in blogs %}
-                    <div class="col-3">
+                    <div class="col-12 col-md-6 col-lg-4 col-xl-3">
                         <div class="card">
                             <img src="{{ vich_uploader_asset(blog, 'image') }}" class="card-img-top" alt="{{ blog.imageName }}">
                             <div class="card-body">
                                 <h5 class="card-title">{{ blog.title }}</h5>
-                                <p class="card-text">{{ blog.text }}</p>
+                                <p class="card-text text-truncate">{{ blog.text }}</p>
                             </div>
                             <ul class="list-group list-group-flush">
                                 {% if blog.date %}
                                     <li class="list-group-item">{{ blog.date.title }}<br>Du {{ blog.date.dateStart|date("d/m/Y") }} au {{ blog.date.dateEnd|date("d/m/Y") }}</li>
                                 {% endif %}
                             </ul>
-{#                            <div class="card-body">#}
-{#                                <a href="{{ path('app_blog') }}" class="card-link">xxxx</a>#}
-{#                            </div>#}
+                            <div class="card-body">
+                                <a href="{{ path('app_blog_article', {'id': blog.id}) }}" class="btn btn-primary stretched-link">En savoir plus</a>
+                            </div>
                         </div>
                     </div>
                 {% endfor %}

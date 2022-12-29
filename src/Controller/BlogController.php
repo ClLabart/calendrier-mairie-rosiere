@@ -24,6 +24,16 @@ class BlogController extends AbstractController
         ]);
     }
 
+    #[Route('/blog/article/{id}', name: 'app_blog_article')]
+    public function article(int $id, ManagerRegistry $doctrine): Response
+    {
+        $blog = $doctrine->getRepository(Blog::class)->find($id);
+
+        return $this->render('blog/article.html.twig', [
+            'blog' => $blog,
+        ]);
+    }
+
     #[Route('/blog/ajouter', name: 'app_blog_add')]
     public function ajouterBlog(Request $request, EntityManagerInterface $entityManager, DateRepository $dateRepository): Response
     {

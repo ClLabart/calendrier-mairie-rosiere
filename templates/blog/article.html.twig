@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }}Article{% endblock %}
+
+{% block headerTitle %}{{ parent() }}Article{% endblock %}
+
+{% block body %}
+    <section class="article-blog mb-5 mt-5">
+        <div class="img-article position-relative mb-3">
+            <div class="btn-partage">
+                <div class="d-flex flex-row justify-content-between mb-2">
+                    <a href="https://twitter.com/intent/tweet?url={{ url('app_blog_article', {'id': blog.id}) }}&text={{ blog.title }}" target="_blank" class="btn btn-light"><i class="fa-solid fa-share-nodes display-6"></i></a>
+                </div>
+            </div>
+            <img src="/{{ vich_uploader_asset(blog, 'image') }}" class="img-fluid" alt="{{ blog.imageName }}">
+        </div>
+        <div class="container">
+            <div class="row g-3">
+                <div class="col-12 mb-3">
+                    <h1 class="mb-3 text-center">{{ blog.title }}</h1>
+                    <p class="lead mb-3">{{ blog.text }}</p>
+                    {% if blog.date %}
+                        <div class="card border-info mb-3">
+                            <div class="card-header">Évènement du calendrier</div>
+                            <div class="card-body">
+                                <h5 class="card-title">{{ blog.date.title }}</h5>
+                                <p class="card-text">Du {{ blog.date.dateStart|date("d/m/Y") }} au {{ blog.date.dateEnd|date("d/m/Y") }}</p>
+                                <a href="{{ path('app_calendar') }}" class="btn btn-info stretched-link">Voir le calendrier <i class="fa-solid fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="col-12">
+                    <a class="btn btn-dark" href="{{ path('app_blog') }}"><i class="fa-solid fa-arrow-left"></i> Retour sur la liste des articles de blog</a>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

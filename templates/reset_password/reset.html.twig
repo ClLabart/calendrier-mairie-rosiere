@@ -1,12 +1,32 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Reset your password{% endblock %}
+{% block title %}{{ parent() }}Réinitialisation du mot de passe{% endblock %}
+
+{% block headerTitle %}{{ parent() }}Réinitialisation du mot de passe{% endblock %}
 
 {% block body %}
-    <h1>Reset your password</h1>
+    <section class="mb-5 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 mb-5">
+                    <h1 class="mb-3">Réinitialisez votre mot de passe</h1>
 
-    {{ form_start(resetForm) }}
-        {{ form_row(resetForm.plainPassword) }}
-        <button class="btn btn-primary">Reset password</button>
-    {{ form_end(resetForm) }}
+                    {{ form_start(resetForm) }}
+{#                        {{ form_row(resetForm.plainPassword) }}#}
+                        <div class="d-flex flex-column justify-content-center">
+                            <div class="form-floating">
+                                {{ form_widget(resetForm.plainPassword) }}
+                                {{ form_label(resetForm.plainPassword) }}
+                            </div>
+
+                            {{ form_row(resetForm.save, {'attr': {'class': 'btn btn-primary'}}) }}
+                        </div>
+                    {{ form_end(resetForm) }}
+                </div>
+                <div class="col-12">
+                    <a class="btn btn-dark" href="{{ path('app_login') }}"><i class="fa-solid fa-arrow-left"></i> Retour sur la page de connexion</a>
+                </div>
+            </div>
+        </div>
+    </section>
 {% endblock %}
