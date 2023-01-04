@@ -5,6 +5,7 @@
 {% block headerTitle %}{{ parent() }}Calendrier{% endblock %}
 
 {% block body %}
+
     <div class="container mb-5 mt-5">
         <div class="row">
             <div class="col-12">
@@ -12,7 +13,6 @@
             </div>
         </div>
     </div>
-
 
     <div class="offcanvas offcanvas-end" tabindex="-1" id="CrudDate" aria-labelledby="CrudDateLabel">
         <div class="offcanvas-header">
@@ -107,17 +107,22 @@
             ].join('-') + 'T' + [padTo2Digits(date.getHours()), padTo2Digits(date.getMinutes())].join(':');
         }
 
-        {% if app.user %}
-        // TODO
-            // function ajax change dates on events
-            // rajouter un popup dire ok ou non
-        //code 403 si c'est pas l'event de l'utilisateur
-            // changer l'event en fonction 403 ou non 
-            function changeEvent(data, props) {
-
-            }
-            
-        {% endif %}
+        async function changeEvent(element) {
+            {% if app.user %}
+                dataEvent = {
+                    'id': element.dataset.eventId,
+                    'value': element.value,
+                    'type': element.name.slice(4,7)
+                }
+                await fetch("{{path('app_edit_event')}}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(dataEvent)
+                }).then(location.reload());
+            {% endif %}
+        }
 
         document.addEventListener('DOMContentLoaded', function() {
             var listDates = document.getElementById("listDates")
@@ -154,7 +159,11 @@
                     {% for event in personalDate  %}
                         {
                             title: "{{ event.title }}",
-                            start: "{{ event.dateStart|date("Y-m-d\\TH:i") }}",
+                            {% if event.dateStart|date("H:i") == "00:00" %}
+                                start: "{{ event.dateStart|date("Y-m-d") }}",
+                            {% else %}
+                                start: "{{ event.dateStart|date("Y-m-d H:i") }}",
+                            {% endif %}
                             {% if event.dateEnd|date("Y-m-d") != null %}
                                 end: "{{ event.dateEnd|date("Y-m-d") }}",
                             {% else %}
@@ -233,7 +242,7 @@
                 var dateEndElement = document.getElementById("newDateEnd")
                 var submitButton = document.getElementById("submitButton")
                 checkboxDate.addEventListener("change", () => {
-                    console.log(checkboxDate.checked)
+                    // console.log(checkboxDate.checked)
                     if (checkboxDate.checked === true) {
                         document.getElementById("submitButton").remove()
                         checkboxDate.parentNode.parentNode.append(dateEndElement)
@@ -248,7 +257,7 @@
                 listDates.innerHTML = ''
                 bsOffcanvas.show()
                 dates.forEach((date) => {
-                    console.log(date)
+                    // console.log(date)
                     let html = `
                     <article class="row mb-4">
                     <div class="col-1 d-flex"><div class="vr"></div></div>
@@ -258,7 +267,7 @@
                         html += `<form class="form-inline mb-1">
                         <label class="m-3" for="dateStart` + date.id + `">Début :</label>
                         <button onclick="ManageHours(this)" type="button" class="btn btn-primary">Afficher l'heure</button>
-                        <input class="form-control w-75" name="dateStart` + date.id + `" type="`;
+                        <input onchange="changeEvent(this)" class="form-control w-75" data-event-id="` + date.id + `" name="dateStart` + date.id + `" type="`;
                         if (date.allDay === true) {
                             html += "date";
                             html += `" value="` + formatDate(date.start) + `">`;
@@ -269,7 +278,7 @@
                         if (date.end) {
                             html += `<label class="m-3" for="dateEnd` + date.id + `">Fin :</label>
                             <button onclick="ManageHours(this)" type="button" class="btn btn-primary">Afficher l'heure</button>
-                            <input class="form-control w-75" name="dateEnd` + date.id + `" type="`;
+                            <input onchange="changeEvent(this)" class="form-control w-75" data-event-id="` + date.id + `" name="dateEnd` + date.id + `" type="`;
                             if (date.allDay === true) {
                                 html += "date";
                                 html +=`" value="` + formatDate(date.end) + `">`;
