@@ -41,33 +41,24 @@ class CalendarController extends AbstractController
         $date = new Date();
 
         if ($request->request->all()) {
-            $valueStart = $request->request->all()['date_calendar']['dateStart'];
-            $valueEnd = $request->request->all()['date_calendar']['dateEnd'];
+            $date = new Date();
 
-            // Utiliser un formType différent pour bien enregistrer la date 😑
-            // si on as rien dans le payload de la requête on prende celui de base
-            if (str_contains($valueStart, 'T') && str_contains($valueEnd, 'T')) {
-                $form = $this->createForm(DateTimeCalendarType::class, $date);
-            } elseif (str_contains($valueStart, 'T') && !str_contains($valueEnd, 'T')) {
-                $form = $this->createForm(DateTimeStartCalendarType::class, $date);
-            } elseif (!str_contains($valueStart, 'T') && str_contains($valueEnd, 'T')) {
-                $form = $this->createForm(DateTimeEndCalendarType::class, $date);
-            } else {
-                $form = $this->createForm(DateCalendarType::class, $date);
-            }
-        } else {
-            $form = $this->createForm(DateCalendarType::class, $date);
-        }
-
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $date = $form->getData();
+            $date->setTitle($request->request->all()['date_calendar']['title']);
+            $date->setDateStart(new DateTime($request->request->all()['date_calendar']['dateStart']));
             $date->setUser($this->getUser());
+
+            if (isset($request->request->all()['date_calendar']['dateEnd'])) {
+                $date->setDateEnd(new DateTime($request->request->all()['date_calendar']['dateEnd']));
+            }
+
             $doctrine->getManager()->persist($date);
             $doctrine->getManager()->flush($date);
-
+            
+            $this->addFlash('notice', 'Date ajoutée !');
             return $this->redirectToRoute('app_calendar');
         }
+
+        $form = $this->createForm(DateCalendarType::class, $date);
 
         return $this->render('calendar/index.html.twig', [
             'globalDate' => $globalDate,
