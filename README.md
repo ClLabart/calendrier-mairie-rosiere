@@ -1,2 +1,4 @@
 # calendrier-mairie-rosiere
-Pour initialiser composer il faut utiliser composer install --ignore-platform-reqs
+Groupe composé de Samuel Proroslay, Killian Cachia, Corentin Diard et Corentin Labart
+
+Pour initialiser composer il faut utiliser composer "install --ignore-platform-reqs"
